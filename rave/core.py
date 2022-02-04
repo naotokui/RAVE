@@ -169,6 +169,9 @@ def fft_convolve(signal, kernel):
 
 
 def search_for_run(run_path):
+    if run_path is None:
+        return None
+        
     if ".ckpt" in run_path:
         pass
     elif "checkpoints" in run_path:
@@ -182,10 +185,13 @@ def search_for_run(run_path):
     else:
         run_path = glob(path.join(run_path, "*"))
         run_path.sort()
-        run_path = run_path[-1]
-        run_path = path.join(run_path, "checkpoints", "*.ckpt")
-        run_path = glob(run_path)
-        run_path = list(filter(lambda e: "last" in e, run_path))[-1]
+        if len(run_path):
+            run_path = run_path[-1]
+            run_path = path.join(run_path, "checkpoints", "*.ckpt")
+            run_path = glob(run_path)
+            run_path = list(filter(lambda e: "last" in e, run_path))[-1]
+        else:
+            run_path = None
     return run_path
 
 
